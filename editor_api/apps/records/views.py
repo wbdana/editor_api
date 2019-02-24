@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Owner, Collaborator, Reader, Record
-from .serializers import OwnerSerializer, CollaboratorSerializer, ReaderSerializer, RecordSerializer
+from .serializers import UserSerializer, OwnerSerializer, CollaboratorSerializer, ReaderSerializer, RecordSerializer
 from .permissions import IsRecordOwnerOrReadOnly
 from rest_framework import generics, permissions, renderers, viewsets
 from rest_framework.decorators import api_view, action
@@ -34,3 +34,36 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({"token": token.key})
 
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class OwnerViewSet(viewsets.ModelViewSet):
+    queryset = Owner.objects.all()
+    serializer_class = OwnerSerializer
+
+
+class CollaboratorViewSet(viewsets.ModelViewSet):
+    queryset = Collaborator.objects.all()
+    serializer_class = CollaboratorSerializer
+
+
+class ReaderViewSet(viewsets.ModelViewSet):
+    queryset = Reader.objects.all()
+    serializer_class = ReaderSerializer
+
+
+class RecordViewSet(viewsets.ModelViewSet):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        IsRecordOwnerOrReadOnly,
+    )
+
+    # @action(detail=True, methods=["GET", "POST"])
