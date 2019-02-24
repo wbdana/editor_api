@@ -9,3 +9,9 @@ schema_view = get_schema_view(title='Records API')
 router = DefaultRouter()
 router.register(r'records', RecordViewSet)
 router.register(r'users', UserViewSet)
+
+# The API URLs are now determined automatically by the router.
+urlpatterns = [
+    path('schema/', schema_view),
+    path('', include(router.urls)),
+]
