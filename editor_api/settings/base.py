@@ -38,7 +38,11 @@ SECRET_KEY = 'hk%_=u+jh@2m6c1yh!^g@$cuiv*vv%-edvknzwr956f3f73c)y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '192.168.1.8',
+    'localhost',
+]
 
 
 # Application definition
@@ -54,7 +58,7 @@ PREREQUISITE_APPS = [
 ]
 
 PROJECT_APPS = [
-    'apps.editor_api.apps.EditorApiConfig',
+    # 'apps.editor_api.apps.EditorApiConfig',
     'apps.records.apps.RecordsConfig',
 ]
 
@@ -88,6 +92,18 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 WSGI_APPLICATION = 'editor_api.wsgi.application'
 
 
@@ -96,8 +112,12 @@ WSGI_APPLICATION = 'editor_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_secret_setting('DATABASE_NAME'),
+        'USER': get_secret_setting('DATABASE_USER'),
+        'PASSWORD': get_secret_setting('DATABASE_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
