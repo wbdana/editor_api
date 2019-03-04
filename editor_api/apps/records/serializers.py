@@ -49,7 +49,7 @@ class OwnerSerializer(serializers.HyperlinkedModelSerializer):
     records = RecordSerializer(many=True, read_only=True)
 
     class Meta:
-        model = User
+        model = Owner
         fields = (
             'url',
             'id',

@@ -14,7 +14,7 @@ import os
 import json
 from django.core.exceptions import ImproperlyConfigured
 
-with open(os.path.abspath("../secrets.json")) as f:
+with open(os.path.abspath("./secrets.json")) as f:
     secrets = json.loads(f.read())
 
 
