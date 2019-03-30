@@ -56,7 +56,15 @@ PREREQUISITE_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+
+    # OAuth2
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
 ]
+
+# https://stackoverflow.com/questions/35388637/runtimeerror-model-class-django-contrib-sites-models-site-doesnt-declare-an-ex
+SITE_ID = 1
 
 PROJECT_APPS = [
     # 'apps.editor_api.apps.EditorApiConfig',
