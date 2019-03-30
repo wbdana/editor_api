@@ -14,7 +14,7 @@ import os
 import json
 from django.core.exceptions import ImproperlyConfigured
 
-with open(os.path.abspath("./secrets.json")) as f:
+with open(os.path.abspath("../secrets.json")) as f:
     secrets = json.loads(f.read())
 
 
@@ -112,7 +112,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
 
         # OAuth2
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'rest_framework_social_oauth2.authentication.SocialAuthentication',
     )
 }
