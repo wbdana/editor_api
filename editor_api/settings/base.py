@@ -16,7 +16,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 # TODO When running python manage.py, it's in a different directory than this
 # So path in the next line needs to be "../secrets.json". Change back when running server.
-with open(os.path.abspath("./secrets.json")) as f:
+with open(os.path.abspath("../secrets.json")) as f:
     secrets = json.loads(f.read())
 
 
@@ -120,11 +120,18 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    # Django
     'django.contrib.auth.backends.ModelBackend',
 
-    # OAuth2
-    'django.contrib.auth.backends.ModelBackend',
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+
+    # GitHub OAuth2
+    'social_core.backends.github.GithubOAuth2'
 )
+
+SOCIAL_AUTH_GITHUB_KEY = get_secret_setting('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = get_secret_setting('SOCIAL_AUTH_GITHUB_SECRET')
 
 WSGI_APPLICATION = 'editor_api.wsgi.application'
 
