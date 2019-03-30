@@ -16,7 +16,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 # TODO When running python manage.py, it's in a different directory than this
 # So path in the next line needs to be "../secrets.json". Change back when running server.
-with open(os.path.abspath("../secrets.json")) as f:
+with open(os.path.abspath("./secrets.json")) as f:
     secrets = json.loads(f.read())
 
 
