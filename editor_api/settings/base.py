@@ -14,6 +14,8 @@ import os
 import json
 from django.core.exceptions import ImproperlyConfigured
 
+# TODO When running python manage.py, it's in a different directory than this
+# So path in the next line needs to be "../secrets.json". Change back when running server.
 with open(os.path.abspath("./secrets.json")) as f:
     secrets = json.loads(f.read())
 
@@ -56,7 +58,15 @@ PREREQUISITE_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+
+    # OAuth2
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
 ]
+
+# https://stackoverflow.com/questions/35388637/runtimeerror-model-class-django-contrib-sites-models-site-doesnt-declare-an-ex
+SITE_ID = 1
 
 PROJECT_APPS = [
     # 'apps.editor_api.apps.EditorApiConfig',
@@ -88,6 +98,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # OAuth2
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -98,12 +112,26 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+
+        # OAuth2
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     )
 }
 
 AUTHENTICATION_BACKENDS = (
+    # Django
     'django.contrib.auth.backends.ModelBackend',
+
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+
+    # GitHub OAuth2
+    'social_core.backends.github.GithubOAuth2'
 )
+
+SOCIAL_AUTH_GITHUB_KEY = get_secret_setting('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = get_secret_setting('SOCIAL_AUTH_GITHUB_SECRET')
 
 WSGI_APPLICATION = 'editor_api.wsgi.application'
 
